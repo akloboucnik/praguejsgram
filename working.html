@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PragueJSGram</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/app.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <script src="js/libs/jquery-1.8.3.js"></script>
+    <script src="js/libs/handlebars-1.0.0-rc.3.js"></script>
+    <script src="js/libs/ember.js"></script>
+    <script src="js/working.js"></script>
+
+    <script type="text/x-handlebars">
+      <div class="container">
+        <div class="well">
+          <img class="top-logo" src="img/logo.png"/>
+          <h1 class="top-header">Gram</h1>
+          <div class="clr"></div>
+        </div>
+
+        {{outlet}}
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="index">
+      <ul class="thumbnails">
+        {{#each controller}}
+          <li class="span4">
+            <div class="thumbnail">
+              <img src="{{unbound src}}" />
+              <div class="desc">{{desc}}, {{attribution}}</div>
+              {{#linkTo 'detail' this class="btn"}}View{{/linkTo}}
+            </div>
+          </li>
+        {{/each}}
+        </ul>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="detail">
+      <div class="thumbnail-detail">
+        <img src="{{unbound bigSrc}}" />
+        <div>{{desc}} by {{user}}</div>
+      </div>
+    </script>
+  </body>
+
+</html>

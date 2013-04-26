@@ -1,0 +1,31 @@
+
+.top-logo {
+    width:120px;
+    height:120px;
+    margin:0;
+    float:left;
+}
+
+.top-header {
+    float:left;
+    margin-left:10px;
+    margin-top:80px;
+}
+
+.clr {
+    clear:both;
+}
+
+.thumbnails > li:nth-of-type(3n+1) {
+    clear:both;
+}
+
+.desc {
+    padding: 8px 0;
+}
+
+.thumbnail-detail {
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
