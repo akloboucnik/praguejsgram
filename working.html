@@ -26,6 +26,7 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="index">
+      {{#if controller.content.isLoaded}}
       <ul class="thumbnails">
         {{#each controller}}
           <li class="span4">
@@ -36,13 +37,20 @@
             </div>
           </li>
         {{/each}}
-        </ul>
+      </ul>
+      {{else}}
+        <div class="loading-wheel"></div>
+      {{/if}}
     </script>
 
     <script type="text/x-handlebars" data-template-name="detail">
       <div class="thumbnail-detail">
-        <img src="{{unbound bigSrc}}" />
-        <div>{{desc}} by {{user}}</div>
+        {{#if controller.content.isLoaded}}
+          <img src="{{unbound bigSrc}}" />
+          <div>{{desc}} by {{user}}</div>
+        {{else}}
+          <div class="loading-wheel"></div>
+        {{/if}}
       </div>
     </script>
   </body>

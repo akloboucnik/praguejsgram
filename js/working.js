@@ -24,40 +24,57 @@ App.Image.reopenClass({
     nextPageEndpoint: 'https://api.instagram.com/v1/tags/praguejs/media/recent?client_id='+CLIENT_ID+'&callback=?',
     detailEndpoint: 'https://api.instagram.com/v1/media/%@?client_id='+CLIENT_ID+'&callback=?',
     findAll: function() {
-        var images = [];
-        return Ember.$.getJSON(this.nextPageEndpoint).then(
+        var images = Em.ArrayProxy.create({
+            isLoaded: false,
+            isError: false,
+            content: []
+        });
+        Ember.$.getJSON(this.nextPageEndpoint).then(
             function(response) {
                 response.data.forEach(function (image) {
-                    console.log(image);
-                    images.push(App.Image.create({
+                    images.pushObject(App.Image.create({
                         id: image.id,
                         src: image.images.low_resolution.url,
                         bigSrc: image.images.standard_resolution.url,
                         desc: image.caption && image.caption.text,
                         user: image.user.username,
-                        link: image.link
+                        link: image.link,
+                        isLoaded: true
                     }));
                 });
-
-                return images;
+                images.set('isLoaded', true);
+            },
+            function(err) {
+                images.set('isError', true);
             }
         );
+
+        return images;
     },
 
     findOne: function(id) {
-        return Ember.$.getJSON(this.detailEndpoint.fmt(id)).then(
+        var image = App.Image.create({
+            isLoaded: false,
+            isError: false,
+        });
+        Ember.$.getJSON(this.detailEndpoint.fmt(id)).then(
             function(response) {
-                var image = response.data;
-                return App.Image.create({
-                    id: image.id,
-                    src: image.images.low_resolution.url,
-                    bigSrc: image.images.standard_resolution.url,
-                    desc: image.caption && image.caption.text,
-                    user: image.user.username,
-                    link: image.link
+                var data = response.data;
+                image.setProperties({
+                    id: data.id,
+                    src: data.images.low_resolution.url,
+                    bigSrc: data.images.standard_resolution.url,
+                    desc: data.caption && data.caption.text,
+                    user: data.user.username,
+                    link: data.link,
+                    isLoaded: true
                 });
+            },
+            function(err) {
+                image.set('isError', true);
             }
         );
+        return image;
     }
 });
 
@@ -73,6 +90,6 @@ App.DetailRoute = Em.Route.extend({
     }
 });
 
-App.IndexController = Em.ArrayController.extend({});
+App.IndexController = Em.ArrayController.extend();
 
 })();
